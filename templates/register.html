@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+
+{% with messages= get_flashed_messages() %}
+{% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endwith %}
+
+
+    <form method="post" action="/register">
+    <container style="display:flex;align-items: center;justify-content: center;height:80vh;width:100vw;">
+        <div class="ele">
+            Email Address :- <input type="email" name="REmail"> <br><br>
+            Your Password :- <input type="password" name="pass"><br><br>
+            Confirm Password:- <input type="password_1" name="pass_1">
+
+            <input type="submit" name="RSubmit" value="Submit" style="padding-left:100px;padding-right:100px;">
+        </div>
+    </container>
+        
+    </form>
+
+
+</body>
+</html>
