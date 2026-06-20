@@ -1,4 +1,6 @@
-from flask import Flask, jsonify , url_for,redirect,render_template,request,flash,session
+from asyncio import tasks
+
+from flask import Flask, Response, jsonify , url_for,redirect,render_template,request,flash,session
 from flask_sqlalchemy import SQLAlchemy
 from psutil import users
 from sqlalchemy.orm import Mapped,mapped_column
@@ -27,7 +29,7 @@ app.config["SECRET_KEY"] = "Aryan@2005"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 db=SQLAlchemy(app)
 
-client = MongoClient(MONGODB_URI)
+client = MongoClient(MONGODB_URI,tls=True,tlsAllowInvalidCertificates=True)
 db2 = client["task_db"]
 
 
@@ -89,7 +91,7 @@ def login():
         email=email,
         password=password
     ).first()
-
+    session['user_id']=user.id if user else None
     if user:
         # flash("Welcome To My Project")
         return render_template("tasks.html")
@@ -136,16 +138,17 @@ def verify():
     ).first()
 
     if not existing_user:
-        db.session.add(User(
+        user=db.session.add(User(
                     email=session.get("email"),
                     password=session.get("password")
                 ))
+        session['user_id']=user.id
         db.session.commit()   
         flash("Email Verified")
         return None 
 
     flash("Fuck You")
-    User.query.all()
+    # User.query.all()
     # for user in users:
     #     print(user.name, user.email)
     return redirect(url_for("login"))
@@ -156,16 +159,44 @@ def verify():
 def view():
     date=request.args.get('date')
     print(date)
+    try:
+        client.admin.command("ping")
+        print("Connected successfully!")
+    except Exception as e:
+        print(e)
 
     tasks=db2.user_task.find({
-        "user_id":1,
-        "date":str(date)
-
+        "user_id": session.get('user_id'),
+        "date": str(date)
     })
+    return Response(
+        json_util.dumps(tasks),
+        mimetype="application/json"
+    )
 
-    print(tasks)
 
-    return json_util.dumps(list(tasks))
+@app.route('/delete_task',methods=['GET','POST','DELETE'])
+def delete_task():
+
+    print(request.args.get('task'))
+    print(request.args.get('date'))
+    print(session.get('user_id'))
+    query =db2.user_task.delete_one({
+        "user_id":int(session.get("user_id")),
+        "date": request.args.get('date'),
+        "task":request.args.get('task')
+    })
+    
+    
+    if query.deleted_count==1:
+        return jsonify({
+            "sucess":True,
+            "message":"Task Deleted Successfully"
+        })
+    return jsonify({
+        "success":False,
+        "message":"Task Not Found"
+    }),404  
 
 
 

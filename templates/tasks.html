@@ -30,7 +30,7 @@
     border:1px solid #333;
     border-radius:10px;
 
-    z-index:999999;
+    z-index:99999;
     pointer-events:auto;
 }
 
@@ -41,6 +41,24 @@
     padding:10px;
     cursor:pointer;
 }
+
+#deleteinfo{
+    display:none;
+    height:15vh;
+    width:10vw;
+    border-radius:2px;
+    padding:5px;
+    z-index:999999;
+    border: 1px solid #333;
+    position:fixed;
+    top:57%;
+    left:60%;
+}
+
+
+
+
+
     </style>
 </head>
 
@@ -48,6 +66,17 @@
 
     <div id="calendar"></div>
 
+    <aside>
+       <div id="message">
+
+       </div>
+    </aside>
+
+
+    <div id="deleteinfo">
+        <input type ="text" id="taskToDelete" placeholder="Enter Task to Delete">
+        <button id="deleteTask" type="button" onclick="deleteTask()">Delete Task</button>
+    </div>
     <div id="menu">
 
         <h3 id="selectedDate"></h3>
@@ -58,7 +87,7 @@
 
         <button id="update" type="button">Update Task</button>
 
-        <button id=delete" type="button">Delete Task</button>
+        <button id="delete" type="button" >Delete Task</button>
 
         <button type="button" onclick="closeMenu()">Close</button>
 
@@ -100,18 +129,107 @@ function closeMenu(){
 
 // view operations 
 
-const viewBTN=document.getElementById("view")
+const viewBTN = document.getElementById("view");
 
-viewBTN.addEventListener("click",function(){
-    const selectedDate=document.getElementById("selectedDate").innerText;
+viewBTN.addEventListener("click", function () {
 
-    fetch("/view_tasks?date="+selectedDate).then(response => response.json())
-    .then(tasks=> {console.log(tasks);})
+    const selectedDate =
+        document.getElementById("selectedDate").innerText;
 
-    console.log("View button clicked");
+    fetch("/view_tasks?date=" + selectedDate)
 
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch tasks");
+            }
+
+            return response.json();
+
+        })
+
+        .then(tasks => {
+
+            console.log(tasks);
+
+            const messageBox = document.getElementById("message");
+
+            messageBox.innerHTML = "";
+
+            if (tasks.length === 0) {
+
+                messageBox.innerHTML = "<h3>No Tasks Found</h3>";
+                return;
+
+            }
+
+            tasks.forEach(task => {
+
+                messageBox.innerHTML += `
+                    <div style="border:1px solid #ccc;
+                                padding:10px;
+                                margin:10px 0;
+                                border-radius:8px;">
+
+                        <h3>${task.task}</h3>
+
+                        <p><b>Date:</b> ${task.date}</p>
+
+                        <p><b>Completed:</b> ${task.completed}</p>
+                    </div>
+                `;
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error("Error:", error);
+
+        });
+
+});
+
+
+// Delete Operation 
+
+const deleteBTN = document.getElementById("delete");
+
+deleteBTN.addEventListener("click",function(){
+
+document.getElementById("deleteinfo").style.display="block";
 
 })
+
+
+function deleteTask(){
+    const taskToDelete= document.getElementById("taskToDelete").value;
+
+    fetch("/delete_task?task=" + taskToDelete+"&date=" + document.getElementById("selectedDate").innerText, {
+        method: "DELETE"
+    }).then(response =>{
+        if (!response.ok) {
+            throw new Error("Failed to delete task");
+        }
+
+        return response.json();
+    }).then(result =>{
+        console.log(result);
+        alert("Task Deleted Successfully");
+        document.getElementById("deleteinfo").style.display="none";
+    }).catch(error =>{
+        console.error("Error:", error);
+    })
+    
+}
+
+
+
+
+
+
+
 
 </script>
 
