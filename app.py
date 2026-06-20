@@ -216,6 +216,30 @@ def insert_task():
     }), 500
     
 
+
+@app.route('/update_task',methods=['PUT','GET','POST'])
+def update_task():
+    result=db2.user_task.update_one({
+        "user_id":session.get("user_id"),
+        "task":request.args.get('task'),
+        "date":request.args.get('date')
+    },
+    {
+        "$set":{"completed":request.args.get("status")}
+    } )
+
+    if result.modified_count:
+        return jsonify({
+            "success": True,
+            "message": "Task inserted successfully."
+        })
+
+    return jsonify({
+        "success": False,
+        "message": "Failed to insert task."
+    }), 500
+
+
 if __name__=="__main__":
     app.run(debug=True,port=5000)
 

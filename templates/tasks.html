@@ -70,6 +70,21 @@
 }
 
 
+#updateinfo{
+    display:none;
+    height:15vh;
+    width:10vw;
+    border-radius:2px;
+    padding:5px;
+    z-index:999999;
+    border: 1px solid #333;
+    position:fixed;
+    top:60%;
+    left:60%;
+    opacity:1;
+}
+
+
 
 
 
@@ -96,6 +111,13 @@
         <input type ="text" id="taskToInsert" placeholder="Enter Task to Insert">
         <button id="insertTask" type="button" onclick="insertTask()">Insert Task</button>
     </div>
+
+    <div id="updateinfo">
+        <input type ="text" id="taskToUpdate" placeholder="Enter Task">
+        <input type="text" id="status" placeholder="Enter status">
+        <button id="updateTask" type="button" onclick="updateTask()">Update Status</button>
+    </div>
+
 
     <div id="menu">
 
@@ -226,6 +248,7 @@ deleteBTN.addEventListener("click",function(){
 
 document.getElementById("deleteinfo").style.display="block";
 document.getElementById('insertinfo').style.display='none';
+document.getElementById("updateinfo").style.display="none";
 
 })
 
@@ -259,6 +282,7 @@ const insertBTN=document.getElementById("insert");
 insertBTN.addEventListener("click",function(){
     document.getElementById('insertinfo').style.display='block';
     document.getElementById('deleteinfo').style.display='none';
+    document.getElementById("updateinfo").style.display="none";
 
 })
 
@@ -285,7 +309,42 @@ function insertTask(){
 
 
 
+// Update Operation 
 
+const updateBTN=document.getElementById("update");
+
+updateBTN.addEventListener("click",function(){
+    document.getElementById("updateinfo").style.display="block";
+    document.getElementById('deleteinfo').style.display='none';
+    document.getElementById('insertinfo').style.display='none';
+
+})
+
+function updateTask(){
+    const taskToUpdate=document.getElementById('taskToUpdate').value;
+    const status=document.getElementById('status').value;
+    
+    fetch(
+    "/update_task?task=" + taskToUpdate +
+    "&status=" + status +
+    "&date=" + document.getElementById("selectedDate").innerText,
+    {
+        method: "PUT"
+    }
+)
+    .then(response =>{
+        if (!response.ok) {
+            throw new Error("Failed to Upddate task");
+        }
+
+        return response.json();
+    }).then(result =>{
+        console.log(result);
+        alert("Task Updated Successfully");
+        document.getElementById("updateinfo").style.display="none";
+    }).catch(error =>{
+        console.error("Error:", error);
+    })}
 
 </script>
 
