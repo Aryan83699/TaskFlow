@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Calendar</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            margin:20px;
+            font-family:Arial, sans-serif;
+        }
+
+        #calendar{
+            max-width:1000px;
+            margin:auto;
+        }
+
+      #menu{
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+
+    width:220px;
+    background:#fff;
+    padding:20px;
+
+    border:1px solid #333;
+    border-radius:10px;
+
+    z-index:999999;
+    pointer-events:auto;
+}
+
+#menu button{
+    display:block;
+    width:100%;
+    margin:10px 0;
+    padding:10px;
+    cursor:pointer;
+}
+    </style>
+</head>
+
+<body>
+
+    <div id="calendar"></div>
+
+    <div id="menu">
+
+        <h3 id="selectedDate"></h3>
+
+        <button id="view" type="button">View Tasks</button>
+
+        <button id="insert" type="button">Insert Task</button>
+
+        <button id="update" type="button">Update Task</button>
+
+        <button id=delete" type="button">Delete Task</button>
+
+        <button type="button" onclick="closeMenu()">Close</button>
+
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+
+        initialView: 'dayGridMonth',
+
+        selectable: true,
+
+        dateClick: function(info) {
+
+            document.getElementById("selectedDate")
+            .innerText = info.dateStr;
+
+            document.getElementById("menu")
+            .style.display = "block";
+        }
+    });
+
+    calendar.render();
+});
+
+function closeMenu(){
+
+    document.getElementById("menu")
+    .style.display = "none";
+}
+
+
+// view operations 
+
+const viewBTN=document.getElementById("view")
+
+viewBTN.addEventListener("click",function(){
+    const selectedDate=document.getElementById("selectedDate").innerText;
+
+    fetch("/view_tasks?date="+selectedDate).then(response => response.json())
+    .then(tasks=> {console.log(tasks);})
+
+    console.log("View button clicked");
+
+
+})
+
+</script>
+
+</body>
+</html>

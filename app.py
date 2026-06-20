@@ -1,4 +1,4 @@
-from flask import Flask , url_for,redirect,render_template,request,flash,session
+from flask import Flask, jsonify , url_for,redirect,render_template,request,flash,session
 from flask_sqlalchemy import SQLAlchemy
 from psutil import users
 from sqlalchemy.orm import Mapped,mapped_column
@@ -7,14 +7,13 @@ import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 import os
+from pymongo import MongoClient
+from bson import json_util
+
+
+
 
 load_dotenv()
-
-
-
-# session['otp']=str(otp)
-# session['email']-email
-
 
 app=Flask(__name__)
 # app = Flask(__name__)
@@ -22,10 +21,14 @@ app=Flask(__name__)
 
 SERVER_EMAIL=os.getenv("SERVER_EMAIL")
 APP_PASS=os.getenv("APP_PASS")
+MONGODB_URI=os.getenv("MONGODB_URI")
 
 app.config["SECRET_KEY"] = "Aryan@2005"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 db=SQLAlchemy(app)
+
+client = MongoClient(MONGODB_URI)
+db2 = client["task_db"]
 
 
 class User(db.Model):
@@ -88,8 +91,8 @@ def login():
     ).first()
 
     if user:
-        flash("Welcome To My Project")
-        return redirect(url_for("home"))
+        # flash("Welcome To My Project")
+        return render_template("tasks.html")
 
     flash("Invalid Email or Password")
     return render_template('register.html')
@@ -105,7 +108,8 @@ def register():
 
     if password!=cpassword:
         flash("Invalid Email or Password")
-        return redirect(url_for("register")) 
+        redirect(url_for("register"))
+        return None 
 
     
     session['email']=email
@@ -145,6 +149,25 @@ def verify():
     # for user in users:
     #     print(user.name, user.email)
     return redirect(url_for("login"))
+
+
+
+@app.route('/view_tasks')
+def view():
+    date=request.args.get('date')
+    print(date)
+
+    tasks=db2.user_task.find({
+        "user_id":1,
+        "date":str(date)
+
+    })
+
+    print(tasks)
+
+    return json_util.dumps(list(tasks))
+
+
 
 if __name__=="__main__":
     app.run(debug=True,port=5000)
