@@ -4,22 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <link rel="stylesheet" href="static/styles/login.css" class="css">
 </head>
 <body>
     <form method="post" action="/login">
-        <div style="display:flex;justify-content:center;align-items:center;height:80vh;">
+
+        <video autoplay muted loop playsinline class="bgvideo">
+    <source src="{{ url_for('static', filename='videos/bg.mp4') }}" type="video/mp4">
+</video>
+
+        <div class="container">
             <div>
-                Email Address:
-                <input type="email" name="Email">
+                <h1 style="padding:15px;">Login</h1>
+                <p style="padding-left: 15px; padding-top: 30px ;font-size: 18px; padding-bottom: 2px; margin-bottom: 5px;">Email Address</p>
+                <input type="email" name="Email" style="margin-left: 15px;padding:5px ; padding-right: 12vw; border-radius: 6px;" >
+                
+
+                <p style="padding-left: 15px; padding-top: 30px ;font-size: 18px; padding-bottom: 2px; margin-bottom: 5px; margin-top: 0px ;">Password</p>
+                <input type="password" name="Password" style="margin-left: 15px;padding:5px ; padding-right: 12vw;border-radius: 6px;" >
                 <br><br>
 
-                Password:
-                <input type="password" name="Password">
-                <br><br>
-
-                <div style="text-align:center;">
-                        <input type="submit" value="Login" style="padding-left: 100px;padding-right: 100px;" >
+                <div class="btn-container">
+                        <input type="submit" value="Login" style="padding-left: 8vw;padding-right: 8vw; font-size: 21px;margin:auto;text-align: center; padding-top: 5px ; padding-bottom: 5px; margin-top: 25px; border-radius: 7px; border-color: white; background-color: #231242; color:white ; font-weight: 700 ; font-family: Arial, Helvetica, sans-serif;" >
                 </div>
+                <br><br>
+                <p style="padding-left: 15px;font-weight: 500;">
+                    Don't Have Account ? 
+                </p>
+                <a  style="font-weight: 700;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;padding-left: 15px;;" 
+                href="/login">Sign Up</a>
             </div>
         </div>
     </form>
