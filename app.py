@@ -178,9 +178,6 @@ def view():
 @app.route('/delete_task',methods=['GET','POST','DELETE'])
 def delete_task():
 
-    print(request.args.get('task'))
-    print(request.args.get('date'))
-    print(session.get('user_id'))
     query =db2.user_task.delete_one({
         "user_id":int(session.get("user_id")),
         "date": request.args.get('date'),
@@ -198,7 +195,26 @@ def delete_task():
         "message":"Task Not Found"
     }),404  
 
+@app.route('/insert_task',methods=['UPDATE','GET','POST'])
+def insert_task():
+    result=db2.user_task.insert_one({
+        "user_id":session.get("user_id"),
+        "task":request.args.get('task'),
+        "date":request.args.get("date"),
+        "completed":"False"
+    })
 
+    if result.inserted_id:
+        return jsonify({
+            "success": True,
+            "message": "Task inserted successfully."
+        })
+
+    return jsonify({
+        "success": False,
+        "message": "Failed to insert task."
+    }), 500
+    
 
 if __name__=="__main__":
     app.run(debug=True,port=5000)
