@@ -43,6 +43,15 @@ form{
     align-items: center;
 }
 
+
+
+#submitButton:hover{
+    transform: scale(1.08);
+    border-color:#ff69b4;
+    box-shadow:0 0 20px rgba(255,105,180,0.5);
+}
+
+
 .bgvideo{
     position:fixed;
     top:0;
@@ -52,4 +61,44 @@ form{
     object-fit:cover;
     opacity:0.4;   /* lower opacity = more background color visible */
     z-index:-1;
+}
+
+
+a:hover{
+    font-size: 18px;
+    color:#231242;
+
+}
+
+
+#brand{
+      animation: slideIn 1s ease-out forwards, 
+             pulse 2s ease-in-out infinite 1s;
+}
+
+@keyframes slideIn {
+    0%{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    color: #333;
+  }
+  50% {
+    transform: scale(1.05);
+    color: #0076ff; /* Changes color subtly */
+  }
+}
+
+
+.input:hover{
+    transform: scale(1.03);
 }

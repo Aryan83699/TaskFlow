@@ -1,0 +1,128 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html,body{
+    width: 100%;
+    height: 100%;
+    
+
+}
+
+body{
+    background-color:#231242; 
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+    overflow: hidden;
+}
+
+.ele{
+    border:2px solid rgb(86, 83, 83);
+    height:65vh;
+    width: 25vw;
+    overflow: hidden;
+    background-color: white;
+    opacity: 0.8;
+    border-radius: 10px;
+}
+
+.bgvideo{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
+    opacity:0.4;   /* lower opacity = more background color visible */
+    z-index:-1;
+}
+
+
+div.ele p{
+    font-weight: 400;
+    padding:0;
+    margin:0;
+    padding-left: 15px;
+    font-size: 18px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+input{
+    padding-right: 12vw;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-left: 15px;
+    border-radius:7px;
+    border: 2px solid black;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+.RegisterBTN{
+    margin-top: 20px;
+    padding-left: 6vw;
+    padding-right: 6vw;
+    font-weight: 700;
+    color:white;
+    background-color: #231242;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.RegisterBTN:hover{
+
+ transform: scale(1.08);
+    border-color:#ff69b4;
+    box-shadow:0 0 20px rgba(255,105,180,0.5);
+}
+
+
+a:hover{
+    font-size: 18px;
+    color:#231242;
+
+}
+
+
+
+
+#brand{
+      animation: slideIn 1s ease-out forwards, 
+             pulse 2s ease-in-out infinite 1s;
+}
+
+@keyframes slideIn {
+    0%{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    color: #333;
+  }
+  50% {
+    transform: scale(1.05);
+    color: #0076ff; /* Changes color subtly */
+  }
+}
+
+
+.ele input:hover{
+    transform: scale(1.03);
+}

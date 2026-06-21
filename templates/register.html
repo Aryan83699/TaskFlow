@@ -4,10 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+     <link rel="stylesheet" href="static/styles/register.css" class="css">
 </head>
 <body>
 
-{% with messages= get_flashed_messages() %}
+
+
+
+    <form method="post" action="/register">
+        <video autoplay muted loop playsinline class="bgvideo">
+    <source src="{{ url_for('static', filename='videos/bg.mp4') }}" type="video/mp4">
+</video>
+    <container>
+        <div class="ele">
+            <h1 style="padding:15px;">Register</h1>
+            <p style="padding-top: 10px;">Email Address :- </p>
+            <input type="email" name="REmail" required placeholder="singharyanxxx@gmail.com" autofocus> <br><br>
+            <p>Password</p>
+            <input type="password" name="pass" required minlength="5" placeholder="Aryan@83699"><br><br>
+            <p>Confirm Password:- </p>
+            <input type="password_1" name="pass_1" required>
+
+            <div style="display: flex;justify-content: center;align-items: center;">
+                <input class="RegisterBTN" type="submit" name="RSubmit" value="Submit">
+            </div>
+
+            <p style="font-size: 16px;margin-top: 9px;margin-bottom: 0px;">Already Have Account ?</p>
+            <a href="/" style="margin-left: 15px;">LogIn</a>
+            <h1 id="brand" align="center" style="font-style: italic;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;padding-top: 1px;">TaskFlow</h1>
+        </div>
+    </container>
+        
+    </form>
+
+    {% with messages= get_flashed_messages() %}
 {% if messages %}
     <ul>
     {% for message in messages %}
@@ -16,21 +46,6 @@
     </ul>
 {% endif %}
 {% endwith %}
-
-
-    <form method="post" action="/register">
-    <container style="display:flex;align-items: center;justify-content: center;height:80vh;width:100vw;">
-        <div class="ele">
-            Email Address :- <input type="email" name="REmail"> <br><br>
-            Your Password :- <input type="password" name="pass"><br><br>
-            Confirm Password:- <input type="password_1" name="pass_1">
-
-            <input type="submit" name="RSubmit" value="Submit" style="padding-left:100px;padding-right:100px;">
-        </div>
-    </container>
-        
-    </form>
-
 
 </body>
 </html>
