@@ -2,7 +2,6 @@ from asyncio import tasks
 
 from flask import Flask, Response, jsonify , url_for,redirect,render_template,request,flash,session
 from flask_sqlalchemy import SQLAlchemy
-from psutil import users
 from sqlalchemy.orm import Mapped,mapped_column
 import random
 import smtplib
