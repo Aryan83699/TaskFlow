@@ -4,10 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify</title>
+    <link rel="stylesheet" href="static/styles/verify.css" class="css">
 </head>
 <body>
     <form method='post'action="/verify">
-        Enter OTP :- <input type="number" name="otp">
+        
+        <video autoplay muted loop playsinline class="bgvideo">
+        <source src="{{ url_for('static', filename='videos/bg.mp4') }}" type="video/mp4">
+        </video>
+
+        <div class="container">
+            <h4 style="margin-left:15px; font-family: Arial, Helvetica, sans-serif;margin-top: 10px;">Enter your OTP</h4><br>
+            <input value="hidden" type="number" name="otp">
+            <p style="margin-left: 15px;margin-top: 25px ; font-size: 14px ; font-width: 500;">Go Back</p><br>
+            <a style="margin-left: 15px" href="/login"><b style="font-weight: 900;">←</b> Home</a>
+            <h1 id="brand" align="center" style="font-style: italic;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;padding-top: 8px;">TaskFlow</h1>
+        </div>
+
+        
+        
     </form>
 </body>
 </html>
